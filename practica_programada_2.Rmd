@@ -29,4 +29,67 @@ datos <- "https://raw.githubusercontent.com/isa229/programacion_analisis_datos_i
 datos_air <- read_csv(datos)
 ```
 
+b) Cuántas categorías diferentes de AQI (AQI Category) hay en este conjunto de datos? Cuáles son?
+(2pts)
 
+
+```{r}
+nombres_columnas <- c("...1", "Pais", "Ciudad", "AQI_Value", "AQI_Category", "lat", "ing")
+colnames(datos_air_quality) <- nombres_columnas
+```
+
+
+
+Cantidad de categorias 
+
+```{r}
+datos_air_quality |> 
+  distinct(AQI_Category) |> 
+  count()
+```
+
+
+¿Cuales son? 
+
+```{r}
+categorias_diferentes_air_quality <- datos_air_quality |> 
+  distinct(AQI_Category)
+```
+
+c) Cree una tabla que indique la cantidad de ciudades que hay en cada categoría de AQI (AQI Category).
+Adicionalmente, traduzca las categorías a español, por ejemplo “Good” sería “Bueno”. Presente esta
+tabla con el paquete gt, añadiendo títulos y subtítulos (10pts)
+
+```{r}
+cantidad_ciudades_categoria <- datos_air_quality|> 
+  group_by(AQI_Category) |> 
+  summarise(Count = n())
+```
+
+
+```{r}
+categorias_espanol <- cantidad_ciudades_categoria |> 
+  mutate(AQI_Category = recode(AQI_Category,
+    "Good" = "Bueno",
+    "Hazardous" = "Peligroso",
+    "Moderate" = "Moderado",
+    "Unhealthy" = "No saludable",
+    "Unhealthy for Sensitive Groups" = "No saludable para grupos sensibles",
+    "Very Unhealthy" = "Muy poco saludable"
+  ))
+```
+
+
+
+```{r}
+tabla_air_quality_español <- categorias_espanol |> 
+  gt () |>  
+  tab_header(
+    title = "Cantidad de Ciudades por Categoria",
+    subtitle = "Calidad del aire"
+  )
+```
+
+```{r}
+tabla_air_quality_español
+```
