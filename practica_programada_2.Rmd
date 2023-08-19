@@ -217,4 +217,5 @@ air_excel <- list(
 
 ```{r}
 write_xlsx(air_excel, path = "C:/Users/maryg/Desktop/practica_programada_2/Datos/air_excel.xlsx")
+
 ```
